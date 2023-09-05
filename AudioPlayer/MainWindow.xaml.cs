@@ -20,6 +20,10 @@ namespace SimpleAudioPlayer
         {
             InitializeComponent();
 
+            videoPlayer.Play();
+            videoPlayer.MediaEnded += VideoPlayer_MediaEnded;
+
+
             mediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
             mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
 
@@ -34,9 +38,21 @@ namespace SimpleAudioPlayer
 
             playlistView.ItemsSource = playlist;
 
+
+            
+
             // Запускаем анимацию фона
         }
-
+        private void VideoPlayer_MediaStart(object sender, EventArgs e)
+        {
+            videoPlayer.Play();
+        }
+        private void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            // Воспроизводим видео снова с начала при его завершении
+            videoPlayer.Position = TimeSpan.Zero;
+            videoPlayer.Play();
+        }
         private void MediaPlayer_MediaOpened(object sender, EventArgs e)
         {
             sliderPosition.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
@@ -49,11 +65,6 @@ namespace SimpleAudioPlayer
                 sliderPosition.Value = mediaPlayer.Position.TotalSeconds;
             }
 
-            // Обновляем состояние анимации на основе позиции воспроизведения аудио
-            Storyboard animationStoryboard = (Storyboard)FindResource("backgroundAnimation");
-            DoubleAnimation animation = (DoubleAnimation)animationStoryboard.Children[0];
-            animation.From = 0;
-            animation.To = 400 * (sliderPosition.Value / sliderPosition.Maximum);
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)

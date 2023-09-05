@@ -1,0 +1,39 @@
+﻿<Window x:Class="SimpleAudioPlayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Simple Audio Player" Height="350" Width="400">                    
+    <Window.Resources>
+        <Storyboard x:Key="backgroundAnimation" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="backgroundGradient" Storyboard.TargetProperty="Offset"
+                             From="0" To="1" Duration="0:0:3" />
+        </Storyboard>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush x:Name="backgroundGradient" StartPoint="0,0" EndPoint="1,0">
+                <GradientStop Color="LightBlue" Offset="0"/>
+                <GradientStop Color="LightGreen" Offset="0.5"/>
+                <GradientStop Color="LightBlue" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button x:Name="btnPlay" Content="Play" Click="btnPlay_Click"/>
+            <Button x:Name="btnPause" Content="Pause" Click="btnPause_Click"/>
+            <Button x:Name="btnStop" Content="Stop" Click="btnStop_Click"/>
+            <Slider x:Name="sliderPosition" Minimum="0" Maximum="100" Value="0" Width="300"
+                    ValueChanged="sliderPosition_ValueChanged"
+                    Thumb.DragStarted="sliderPosition_DragStarted"
+                    Thumb.DragCompleted="sliderPosition_DragCompleted"/>
+
+            <Slider x:Name="sliderVolume" Minimum="0" Maximum="1" Value="0.5" Width="100" 
+                    ValueChanged="sliderVolume_ValueChanged"/>
+            <ListView x:Name="playlistView" SelectionChanged="playlistView_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+    </Grid>
+</Window>

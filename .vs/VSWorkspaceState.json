@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\AudioPlayer"
   ],
-  "SelectedNode": "\\AudioPlayer.sln",
+  "SelectedNode": "\\AudioPlayer\\MainWindow.xaml",
   "PreviewInSolutionExplorer": false
 }

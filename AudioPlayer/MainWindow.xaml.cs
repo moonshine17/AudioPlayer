@@ -55,15 +55,6 @@ namespace SimpleAudioPlayer
             playlistView.ItemsSource = сокращенныеНазвания;
         }
 
-        //public string Shorty(strin playlist)
-        //{
-        //    foreach (string полноеНазвание in playlist) // вашПлейлист - это список полных названий песен
-        //    {
-        //        string сокращенноеНазвание = ReplaceName(полноеНазвание); // Используйте вашу функцию для сокращения
-        //        сокращенныеНазвания.Add(сокращенноеНазвание);
-        //    }
-        //    return сокращенныеНазвания;
-        //}
         public string ReplaceName(string FullName)
         {
             FullName = FullName.ReplaceFirst("C:\\Users\\furao\\Music\\", "");
@@ -82,6 +73,7 @@ namespace SimpleAudioPlayer
             videoPlayer.Position = TimeSpan.Zero;
             videoPlayer.Play();
         }
+
 
 
         private void MediaPlayer_MediaOpened(object sender, EventArgs e)
@@ -141,16 +133,20 @@ namespace SimpleAudioPlayer
 
         private void MediaPlayer_MediaEnded(object sender, EventArgs e)
         {
-            if (currentIndex < playlist.Count - 1)
+            if(sliderPosition.Value == sliderPosition.Maximum)
             {
-                currentIndex++;
-                btnPlay_Click(null, null); // Начинаем воспроизведение следующего трека в плейлисте
-            }
-            else
-            {
-                mediaPlayer.Stop();
-                timer.Stop();
-                mediaPlayer.Position = TimeSpan.Zero;
+                if (currentIndex < playlist.Count - 1)
+                {
+                    currentIndex++;
+                    btnPlay_Click(null, null);
+
+                }
+                else
+                {
+                    mediaPlayer.Stop();
+                    timer.Stop();
+                    mediaPlayer.Position = TimeSpan.Zero;
+                }
             }
         }
 
@@ -185,21 +181,7 @@ namespace SimpleAudioPlayer
             }
             foreach (string полноеНазвание in playlist) // вашПлейлист - это список полных названий песен
             {
-                string сокращенноеНазвание = ReplaceName(полноеНазвание); // Используйте вашу функцию для сокращения
-                                                                          //bool haveel = false;
-
-                //foreach (string элемент in сокращенныеНазвания)
-                //{
-                //    if (элемент == сокращенноеНазвание)
-                //    {
-                //        haveel = true;
-                //        break; // Можно выйти из цикла, если элемент найден
-                //    }
-                //    else
-                //    {
-
-                //    }
-                //}
+                string сокращенноеНазвание = ReplaceName(полноеНазвание); 
                 bool содержитЭлемент = сокращенныеНазвания.Contains(сокращенноеНазвание);
                 if(содержитЭлемент == true)
                 {
@@ -213,11 +195,58 @@ namespace SimpleAudioPlayer
             ICollectionView view = CollectionViewSource.GetDefaultView(playlistView.ItemsSource);
             view.Refresh();
         }
-    }
-    public class Song
-    {
-        public string FullTitle { get; set; } // Полное название
-        public string ShortTitle { get; set; } // Сокращенное название
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DoubleAnimation heightAnimation = new DoubleAnimation();
+            DoubleAnimation opacityAnimation = new DoubleAnimation();
+
+            if (sliderVolume.Visibility == Visibility.Collapsed)
+            {
+                // Анимация появления слайдера
+                sliderVolume.Visibility = Visibility.Visible;
+
+                heightAnimation.From = 0;
+                heightAnimation.To = sliderVolume.ActualHeight; // Используем текущую высоту слайдера
+                opacityAnimation.From = 0;
+                opacityAnimation.To = 1; // Изменяем прозрачность на 1 для полной видимости
+            }
+            else
+            {
+                // Анимация исчезновения слайдера
+                heightAnimation.From = sliderVolume.ActualHeight; // Используем текущую высоту слайдера
+                heightAnimation.To = 0;
+                opacityAnimation.From = 1; // Изменяем прозрачность на 1 для полной видимости
+                opacityAnimation.To = 0;
+
+                // После окончания анимации скрыть слайдер
+                heightAnimation.Completed += (sen, eventArgs) =>
+                {
+                    sliderVolume.Visibility = Visibility.Collapsed;
+                };
+            }
+
+            // Продолжительность анимации
+            Duration duration = new Duration(TimeSpan.FromSeconds(0.5));
+
+            // Применение анимации высоты слайдера
+            Storyboard heightStoryboard = new Storyboard();
+            heightStoryboard.Children.Add(heightAnimation);
+            Storyboard.SetTarget(heightAnimation, sliderVolume);
+            Storyboard.SetTargetProperty(heightAnimation, new PropertyPath("Height"));
+            heightStoryboard.Duration = duration;
+            
+            // Применение анимации прозрачности
+            Storyboard opacityStoryboard = new Storyboard();
+            opacityStoryboard.Children.Add(opacityAnimation);
+            Storyboard.SetTarget(opacityAnimation, sliderVolume);
+            Storyboard.SetTargetProperty(opacityAnimation, new PropertyPath("Opacity"));
+            opacityStoryboard.Duration = duration;
+
+            // Запуск анимации
+            heightStoryboard.Begin();
+            opacityStoryboard.Begin();
+        }
     }
     public static class StringExtensions
     {

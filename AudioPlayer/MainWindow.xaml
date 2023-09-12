@@ -3,39 +3,46 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Simple Audio Player" Height="400" Width="400" ResizeMode="NoResize" Background="Black">
     <Grid Margin="0,0,0,0">
-        <MediaElement x:Name="videoPlayer" Source="Videos/music-wave.mp4" LoadedBehavior="Manual" MediaEnded="VideoPlayer_MediaEnded" Stretch="UniformToFill"/>
-        <Label Content="Audio Player" HorizontalAlignment="Center" Height="31" Margin="0,22,0,0" VerticalAlignment="Top" Width="114" FontSize="18" Foreground="#15c6c6"/>
-        <Button x:Name="btnPause" Click="btnPause_Click" Margin="63,157,270,165" Foreground="White" Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="124*"/>
+            <ColumnDefinition Width="102*"/>
+            <ColumnDefinition Width="71*"/>
+            <ColumnDefinition Width="103*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="111*"/>
+            <RowDefinition Height="80*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="151*"/>
+            <RowDefinition Height="17*"/>
+        </Grid.RowDefinitions>
+        <Canvas Background="Black" Margin="42,0,47,7">
+            <Line x:Name="soundLine" Stroke="Green" StrokeThickness="5" X1="0" X2="0" Y1="0" Y2="0"/>
+        </Canvas>
+        <MediaElement x:Name="videoPlayer" Source="Videos/music-wave.mp4" LoadedBehavior="Manual" MediaEnded="VideoPlayer_MediaEnded" Stretch="UniformToFill" Grid.RowSpan="5" Grid.ColumnSpan="4"/>
+        <Label Content="Audio Player" HorizontalAlignment="Left" Height="31" Margin="19,22,0,0" VerticalAlignment="Top" Width="114" FontSize="18" Foreground="#15c6c6" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnPause" Click="btnPause_Click" Margin="63,23,0,7" Foreground="White" Background="Transparent" Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Images/pause.png" Width="27" Height="23" />
             </StackPanel>
         </Button>
-        <Button x:Name="btnPlay" Click="btnPlay_Click" Margin="152,157,178,165" Foreground="White" Background="Transparent">
+        <Button x:Name="btnPlay" Click="btnPlay_Click" Margin="28,23,18,7" Foreground="White" Background="Transparent" Grid.Row="1" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Images/play.png" Width="27" Height="23" />
             </StackPanel>
         </Button>
-        <Button x:Name="btnStop" Click="btnStop_Click" Margin="239,157,91,165" Foreground="White" Background="Transparent">
+        <Button x:Name="btnStop" Click="btnStop_Click" Margin="0,23,8,7" Foreground="White" Background="Transparent" Grid.Row="1" Grid.Column="2">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Images/stop.png" Width="27" Height="23" />
             </StackPanel>
         </Button>
-        <Button Content="Добавить &#xD;&#xA;песни" Margin="324,260,9,42" Click="AddSong_Click" Background="Transparent" Foreground="White" />
-        <Slider x:Name="sliderVolume" Minimum="0" Maximum="1" Value="0.5" 
-            ValueChanged="sliderVolume_ValueChanged" Margin="311,144,3,184" RenderTransformOrigin="0.5,0.5">
-            <Slider.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-89.594"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Slider.RenderTransform>
-        </Slider>
+        <Button Content="Добавить &#xD;&#xA;песни" Margin="2,43,9,35" Click="AddSong_Click" Background="Transparent" Foreground="White" Grid.Row="3" Grid.Column="3" />
+        <Slider x:Name="sliderVolume" Minimum="0" Maximum="1" Value="0.5"
+            ValueChanged="sliderVolume_ValueChanged" Margin="0,80,7,0" RenderTransformOrigin="0.516,0.474" Grid.Column="3" Grid.Row="1" Grid.RowSpan="2"/>
         <Slider x:Name="sliderPosition" Minimum="0" Maximum="100" Value="0"
                     ValueChanged="sliderPosition_ValueChanged"
                     Thumb.DragStarted="sliderPosition_DragStarted"
-                    Thumb.DragCompleted="sliderPosition_DragCompleted" Margin="66,201,88,144">
+                    Thumb.DragCompleted="sliderPosition_DragCompleted" Margin="65,7,6,1" Grid.Row="2" Grid.ColumnSpan="3">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -45,7 +52,7 @@
                 </TransformGroup>
             </Slider.RenderTransform>
         </Slider>
-        <ListView x:Name="playlistView"  SelectionChanged="playlistView_SelectionChanged" Margin="72,224,81,10" Background="#231e28" Foreground="White">
+        <ListView x:Name="playlistView"  SelectionChanged="playlistView_SelectionChanged" Margin="72,7,4,3" Background="#231e28" Foreground="White" Grid.Row="3" Grid.ColumnSpan="3">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Песня" Width="200">
@@ -58,5 +65,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Grid.Column="3" Content="Громкость" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top" Click="Button_Click" Height="20" Width="62">
+        </Button>
     </Grid>
 </Window>

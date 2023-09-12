@@ -98,6 +98,10 @@
     <Resource Include="Images\pause.png" />
     <Resource Include="Images\play.png" />
     <Resource Include="Images\stop.png" />
+    <Resource Include="Images\high.png" />
+    <Resource Include="Images\low.png" />
+    <Resource Include="Images\medium.png" />
+    <Resource Include="Images\silence.png" />
     <Content Include="Videos\music-wave.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
